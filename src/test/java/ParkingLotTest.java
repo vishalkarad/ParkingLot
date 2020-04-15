@@ -20,7 +20,7 @@ public class ParkingLotTest {
         try {
             parkingLotMain.park(vehicle);
             boolean result = parkingLotMain.isVehiclePark(vehicle);
-            Assert.assertEquals(true,result);
+            Assert.assertTrue(result);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
