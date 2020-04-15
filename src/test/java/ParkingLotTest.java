@@ -25,4 +25,13 @@ public class ParkingLotTest {
             e.printStackTrace();
         }
     }
+    @Test
+    public void givenVehicle_WhenAllreadyParked_ThenReturnException() {
+        try {
+            parkingLotMain.park(vehicle);
+            parkingLotMain.park(new Object());
+        } catch (ParkingLotException e) {
+            Assert.assertEquals("Parking lot is fulll",e.getMessage());
+        }
+    }
 }
