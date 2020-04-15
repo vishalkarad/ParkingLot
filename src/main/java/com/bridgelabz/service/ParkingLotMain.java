@@ -12,7 +12,7 @@ public class ParkingLotMain {
             throw new ParkingLotException("Parking lot is full");
         this.vehicle = vehicle;
     }
-
+    // Check Vehicle is present or not
     public boolean isVehiclePark(Object vehicle) {
         if (this.vehicle.equals(vehicle))
             return true;
