@@ -1,3 +1,4 @@
+import com.bridgelabz.AirportSecurity;
 import com.bridgelabz.VehiclePOJO;
 import com.bridgelabz.exception.ParkingLotException;
 import com.bridgelabz.service.ParkingLotMain;
@@ -19,7 +20,7 @@ public class ParkingLotTest {
     @Test
     public void givenVehicle_WhenParke_ThenReturnTrue() {
         try {
-            vehicle.setVehicaleName("sujuki");vehicle.setVehicleNumber("MH4R4545");
+            vehicle.setVehicleName("sujuki");vehicle.setVehicleNumber("MH4R4545");
             parkingLotMain.park(vehicle);
             boolean result = parkingLotMain.isVehiclePark(vehicle);
             Assert.assertTrue(result);
@@ -31,10 +32,11 @@ public class ParkingLotTest {
     @Test
     public void givenVehicle_WhenAllreadyParked_ThenReturnException() {
         try {
+            vehicle.setVehicleName("sujuki");vehicle.setVehicleNumber("MH4R4545");
             parkingLotMain.park(vehicle);
             parkingLotMain.park(vehicle);
         } catch (ParkingLotException e) {
-            Assert.assertEquals("Parking lot is full",e.getMessage());
+             Assert.assertEquals("This vehicle already park",e.getMessage());
         }
     }
 
@@ -53,13 +55,29 @@ public class ParkingLotTest {
     public void givenParkingLot_WhenFull_ThenReturnTrue() {
         try {
             VehiclePOJO vehicle = new VehiclePOJO();
-            vehicle.setVehicaleName("sujuki");vehicle.setVehicleNumber("MH4R4545");
+            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4545");
             parkingLotMain.park(vehicle);
-            vehicle.setVehicaleName("sujuki");vehicle.setVehicleNumber("MH4R4547");
+            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
             parkingLotMain.park(vehicle);
+            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
             parkingLotMain.park(vehicle);
         } catch (ParkingLotException e) {
             Assert.assertEquals("Parking lot is full",e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenParkingLotIsFull_WhenInformAirportSecurity_ThenReturnTrue() {
+        try {
+            VehiclePOJO vehicle = new VehiclePOJO();
+            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4545");
+            parkingLotMain.park(vehicle);
+            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
+            parkingLotMain.park(vehicle);
+            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
+            parkingLotMain.park(vehicle);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals("parking lot is full",e.getMessage());
         }
     }
 }
