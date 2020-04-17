@@ -1,6 +1,7 @@
 package com.bridgelabz.service;
 
 import com.bridgelabz.AirportSecurity;
+import com.bridgelabz.Owner;
 import com.bridgelabz.VehiclePOJO;
 import com.bridgelabz.exception.ParkingLotException;
 import java.util.LinkedHashMap;
@@ -11,15 +12,16 @@ public class ParkingLotMain {
     AirportSecurity airportSecurity = new AirportSecurity();
 
     // park vehicle and check parking lot
-    public void park(VehiclePOJO vehicle) throws  ParkingLotException {
+    public String park(VehiclePOJO vehicle) throws  ParkingLotException {
         if (parkingLot.containsKey(vehicle.getVehicleNumber()))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK,"This vehicle already park");
         if (parkingLot.size()%2==0 && parkingLot.size() != 0) {
             parkingLot.put(vehicle.getVehicleNumber(),vehicle);
             airportSecurity.setParkingSlotFullOrNot("parking lot is full");
-            throw new ParkingLotException(ParkingLotException.MyexceptionType.LOT_IS_FULL,airportSecurity.getParkingSlotFullOrNot());
+            return "parking lot is full";
         }else {
             parkingLot.put(vehicle.getVehicleNumber(),vehicle);
+            return "record Insert";
         }
     }
 
@@ -31,11 +33,18 @@ public class ParkingLotMain {
     }
 
     // un park vehicle
-    public boolean unPark(VehiclePOJO vehicle) {
-        if (parkingLot.containsKey(vehicle.getVehicleNumber())){
+    public String unPark(VehiclePOJO vehicle) throws ParkingLotException {
+        if (parkingLot.containsKey(vehicle.getVehicleNumber())) {
             parkingLot.remove(vehicle.getVehicleNumber());
-            return true;
+            if (parkingLot.size() < 3) {
+                new Owner().setParkingFullOrNot("parking lot space available ");
+                return "space available";
+            }
+            return "unpark";
         }
-        else return false;
+        else{
+            throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_NOT_PARK,
+                                                                           "This vehicle not park in my parking lot");
+        }
     }
 }
