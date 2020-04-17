@@ -20,9 +20,8 @@ public class ParkingLotTest {
     public void givenVehicle_WhenParke_ThenReturnTrue() {
         try {
             vehicle.setVehicleName("sujuki");vehicle.setVehicleNumber("MH4R4545");
-            parkingLotMain.park(vehicle);
-            String result = parkingLotMain.isVehiclePark(vehicle);
-            Assert.assertEquals("vehicle park in lot number 1",result);
+            String result = parkingLotMain.park(vehicle);
+            Assert.assertEquals("park vehicle",result);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -115,6 +114,17 @@ public class ParkingLotTest {
             parkingLotMain.park(vehicle);
             String result = parkingLotMain.isVehiclePark(vehicle);
             Assert.assertEquals("vehicle park in lot number 2",result);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenVehicleParkInLot_WhenCharge_ThenReturnTrue() {
+        try {
+            vehicle.setVehicleName("sujuki");vehicle.setVehicleNumber("MH4R4545");
+            String result = parkingLotMain.park(vehicle);
+            Assert.assertEquals("park vehicle",result);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
