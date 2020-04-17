@@ -4,7 +4,11 @@ import com.bridgelabz.AirportSecurity;
 import com.bridgelabz.Owner;
 import com.bridgelabz.VehiclePOJO;
 import com.bridgelabz.exception.ParkingLotException;
+
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 
 public class ParkingLotMain {
 
@@ -35,9 +39,12 @@ public class ParkingLotMain {
     // un park vehicle
     public String unPark(VehiclePOJO vehicle) throws ParkingLotException {
         if (parkingLot.containsKey(vehicle.getVehicleNumber())) {
+            Set<String> keys = parkingLot.keySet();
+            List<String> listKeys = new ArrayList<String>( keys );
+            int lotPosition = listKeys.indexOf(vehicle.getVehicleNumber());
             parkingLot.remove(vehicle.getVehicleNumber());
             if (parkingLot.size() < 3) {
-                new Owner().setParkingFullOrNot("parking lot space available ");
+                new Owner().setParkingFullOrNot("parking lot space available "+(lotPosition+1));
                 return "space available";
             }
             return "unpark";
