@@ -21,8 +21,8 @@ public class ParkingLotTest {
         try {
             vehicle.setVehicleName("sujuki");vehicle.setVehicleNumber("MH4R4545");
             parkingLotMain.park(vehicle);
-            boolean result = parkingLotMain.isVehiclePark(vehicle);
-            Assert.assertTrue(result);
+            String result = parkingLotMain.isVehiclePark(vehicle);
+            Assert.assertEquals("vehicle park in lot number 1",result);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -106,5 +106,17 @@ public class ParkingLotTest {
         String result=parkingLotMain.unPark(vehicle);
         Assert.assertEquals("space available",result);
     }
-
+    @Test
+    public void givenfindMyCar_WhenParke_ThenReturnCarPosition() {
+        try {
+            vehicle.setVehicleName("sujuki");vehicle.setVehicleNumber("MH4R4545");
+            parkingLotMain.park(vehicle);
+            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
+            parkingLotMain.park(vehicle);
+            String result = parkingLotMain.isVehiclePark(vehicle);
+            Assert.assertEquals("vehicle park in lot number 2",result);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
 }
