@@ -1,4 +1,3 @@
-import com.bridgelabz.AirportSecurity;
 import com.bridgelabz.VehiclePOJO;
 import com.bridgelabz.exception.ParkingLotException;
 import com.bridgelabz.service.ParkingLotMain;
@@ -44,8 +43,8 @@ public class ParkingLotTest {
     public void givenVehicle_WhenUnPark_ThenTrue() {
         try {
             parkingLotMain.park(vehicle);
-            boolean result=parkingLotMain.unPark(vehicle);
-            Assert.assertEquals(true,result);
+            String  result=parkingLotMain.unPark(vehicle);
+            Assert.assertEquals("space available",result);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -60,9 +59,10 @@ public class ParkingLotTest {
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
             parkingLotMain.park(vehicle);
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
-            parkingLotMain.park(vehicle);
-        } catch (ParkingLotException e) {
-            Assert.assertEquals("Parking lot is full",e.getMessage());
+            String result = parkingLotMain.park(vehicle);
+            Assert.assertEquals("parking lot is full",result);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -75,9 +75,24 @@ public class ParkingLotTest {
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
             parkingLotMain.park(vehicle);
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
-            parkingLotMain.park(vehicle);
-        } catch (ParkingLotException e) {
-            Assert.assertEquals("parking lot is full",e.getMessage());
+            String parkingLotFull = parkingLotMain.park(vehicle);
+            Assert.assertEquals("parking lot is full",parkingLotFull);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenAgainParkingSpaceAvailable_WhenInformOwner_ThenReturnTrue() throws ParkingLotException {
+        VehiclePOJO vehicle = new VehiclePOJO();
+        vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4545");
+        parkingLotMain.park(vehicle);
+        vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
+        parkingLotMain.park(vehicle);
+        vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
+        parkingLotMain.park(vehicle);
+        String result=parkingLotMain.unPark(vehicle);
+        Assert.assertEquals("space available",result);
+    }
+
 }
