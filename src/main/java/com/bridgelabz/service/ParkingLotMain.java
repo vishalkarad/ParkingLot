@@ -13,20 +13,19 @@ import java.util.Set;
 public class ParkingLotMain {
 
     LinkedHashMap<String,Object> parkingLot = new LinkedHashMap<String, Object>();
-    AirportSecurity airportSecurity = new AirportSecurity();
-
+    Owner owner = new Owner();
     // park vehicle and check parking lot
     public String park(VehiclePOJO vehicle) throws  ParkingLotException {
         if (parkingLot.containsKey(vehicle.getVehicleNumber()))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK,"This vehicle already park");
-        if (parkingLot.size()%2==0 && parkingLot.size() != 0) {
-            parkingLot.put(vehicle.getVehicleNumber(),vehicle);
-            airportSecurity.setParkingSlotFullOrNot("parking lot is full");
+        parkingLot.put(vehicle.getVehicleNumber(),vehicle);
+        owner.setParkingCharge(vehicle.getVehicleNumber()+" this vehicle charge Rs.10");
+        if (parkingLot.size()%3==0 && parkingLot.size() != 0) {
+            new AirportSecurity().setParkingSlotFullOrNot("parking lot is full");
+            owner.setParkingFullOrNot("parking lot is full");
             return "parking lot is full";
-        }else {
-            parkingLot.put(vehicle.getVehicleNumber(),vehicle);
-            return "record Insert";
         }
+            return "park vehicle";
     }
 
     // Check Vehicle is present or not
