@@ -83,6 +83,18 @@ public class ParkingLotTest {
     }
 
     @Test
+    public void givenVehicleNotPresentInParkingLot_WhenUnPark_ThenThrowException() {
+        try {
+            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4545");
+            parkingLotMain.park(vehicle);
+            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
+            String  result=parkingLotMain.unPark(vehicle);;
+        } catch (ParkingLotException e) {
+            Assert.assertEquals("This vehicle not park in my parking lot",e.getMessage());
+        }
+    }
+
+    @Test
     public void givenAgainParkingSpaceAvailable_WhenInformOwner_ThenReturnTrue() throws ParkingLotException {
         VehiclePOJO vehicle = new VehiclePOJO();
         vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4545");
