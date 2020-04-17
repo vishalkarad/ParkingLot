@@ -30,18 +30,25 @@ public class ParkingLotMain {
     }
 
     // Check Vehicle is present or not
-    public boolean isVehiclePark(VehiclePOJO vehicle) {
-        if (parkingLot.containsKey(vehicle.getVehicleNumber()))
-            return true;
-        return false;
+    public String  isVehiclePark(VehiclePOJO vehicle) throws ParkingLotException {
+        if (parkingLot.containsKey(vehicle.getVehicleNumber())) {
+            int lotPosition = vehicleParkLotNumber(vehicle);
+            return "vehicle park in lot number "+(lotPosition+1);
+        }
+        else {
+            throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_NOT_PARK,
+                    "This vehicle not park in my parking lot");
+        }
     }
-
+    public int vehicleParkLotNumber(VehiclePOJO vehicle){
+        Set<String> keys = parkingLot.keySet();
+        List<String> listKeys = new ArrayList<String>( keys );
+        return listKeys.indexOf(vehicle.getVehicleNumber());
+    }
     // un park vehicle
     public String unPark(VehiclePOJO vehicle) throws ParkingLotException {
         if (parkingLot.containsKey(vehicle.getVehicleNumber())) {
-            Set<String> keys = parkingLot.keySet();
-            List<String> listKeys = new ArrayList<String>( keys );
-            int lotPosition = listKeys.indexOf(vehicle.getVehicleNumber());
+            int lotPosition = vehicleParkLotNumber(vehicle);
             parkingLot.remove(vehicle.getVehicleNumber());
             if (parkingLot.size() < 3) {
                 new Owner().setParkingFullOrNot("parking lot space available "+(lotPosition+1));
