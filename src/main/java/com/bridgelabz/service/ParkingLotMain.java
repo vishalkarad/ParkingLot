@@ -1,6 +1,6 @@
 package com.bridgelabz.service;
 
-import com.bridgelabz.AirportSecurity;
+import com.bridgelabz.Observer;
 import com.bridgelabz.Owner;
 import com.bridgelabz.VehiclePOJO;
 import com.bridgelabz.exception.ParkingLotException;
@@ -13,19 +13,30 @@ import java.util.Set;
 public class ParkingLotMain {
 
     LinkedHashMap<String,Object> parkingLot = new LinkedHashMap<String, Object>();
+    private List<Observer> observableList = new ArrayList<>();
     Owner owner = new Owner();
+    private String isFull;
+
+    public void addObserver(Observer observable) {
+        this.observableList.add(observable);
+    }
+
+     public void setStatus(String isFull) {
+        this.isFull = isFull;
+        for (Observer observable : this.observableList) {
+            observable.update(this.isFull);
+        }
+    }
+     
     // park vehicle and check parking lot
     public String park(VehiclePOJO vehicle) throws  ParkingLotException {
         if (parkingLot.containsKey(vehicle.getVehicleNumber()))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK,"This vehicle already park");
         parkingLot.put(vehicle.getVehicleNumber(),vehicle);
-        owner.setParkingCharge(vehicle.getVehicleNumber()+" this vehicle charge Rs.10");
-        if (parkingLot.size()%3==0 && parkingLot.size() != 0) {
-            new AirportSecurity().setParkingSlotFullOrNot("parking lot is full");
-            owner.setParkingFullOrNot("parking lot is full");
-            return "parking lot is full";
-        }
-            return "park vehicle";
+        setStatus("this vehicle charge Rs.10");
+        if (parkingLot.size()%3==0 && parkingLot.size() != 0)
+            setStatus("Full");
+        return "park vehicle";
     }
 
     // Check Vehicle is present or not
@@ -36,7 +47,7 @@ public class ParkingLotMain {
         }
         else {
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_NOT_PARK,
-                    "This vehicle not park in my parking lot");
+                                                                           "This vehicle not park in my parking lot");
         }
     }
     public int vehicleParkLotNumber(VehiclePOJO vehicle){
@@ -49,10 +60,8 @@ public class ParkingLotMain {
         if (parkingLot.containsKey(vehicle.getVehicleNumber())) {
             int lotPosition = vehicleParkLotNumber(vehicle);
             parkingLot.remove(vehicle.getVehicleNumber());
-            if (parkingLot.size() < 3) {
-                new Owner().setParkingFullOrNot("parking lot space available "+(lotPosition+1));
-                return "space available";
-            }
+            if (parkingLot.size() < 3)
+                setStatus("Have Space lot number "+(lotPosition+1));
             return "unpark";
         }
         else{

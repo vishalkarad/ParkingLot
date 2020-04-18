@@ -1,3 +1,5 @@
+import com.bridgelabz.AirportSecurity;
+import com.bridgelabz.Owner;
 import com.bridgelabz.VehiclePOJO;
 import com.bridgelabz.exception.ParkingLotException;
 import com.bridgelabz.service.ParkingLotMain;
@@ -9,11 +11,15 @@ public class ParkingLotTest {
 
     ParkingLotMain parkingLotMain = null;
     VehiclePOJO vehicle = null;
+    Owner owner = null;
+    AirportSecurity airportSecurity = null;
 
     @Before
     public void setUp(){
         vehicle = new VehiclePOJO();
-         parkingLotMain = new ParkingLotMain();
+        parkingLotMain = new ParkingLotMain();
+        owner = new Owner();
+        airportSecurity = new AirportSecurity();
     }
 
     @Test
@@ -39,11 +45,11 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenVehicle_WhenUnPark_ThenTrue() {
+    public void givenVehicle_WhenUnPark_ThenReturnUnpark() {
         try {
             parkingLotMain.park(vehicle);
-            String  result=parkingLotMain.unPark(vehicle);
-            Assert.assertEquals("space available",result);
+            String  result = parkingLotMain.unPark(vehicle);
+            Assert.assertEquals("unpark",result);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -59,7 +65,7 @@ public class ParkingLotTest {
             parkingLotMain.park(vehicle);
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
             String result = parkingLotMain.park(vehicle);
-            Assert.assertEquals("parking lot is full",result);
+            Assert.assertEquals("park vehicle",result);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,14 +74,15 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotIsFull_WhenInformAirportSecurity_ThenReturnTrue() {
         try {
+            parkingLotMain.addObserver(airportSecurity);
             VehiclePOJO vehicle = new VehiclePOJO();
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4545");
             parkingLotMain.park(vehicle);
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
             parkingLotMain.park(vehicle);
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
-            String parkingLotFull = parkingLotMain.park(vehicle);
-            Assert.assertEquals("parking lot is full",parkingLotFull);
+            parkingLotMain.park(vehicle);
+            Assert.assertEquals("Full",airportSecurity.getParkingSlotFullOrNot());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,6 +102,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenAgainParkingSpaceAvailable_WhenInformOwner_ThenReturnTrue() throws ParkingLotException {
+        parkingLotMain.addObserver(owner);
         VehiclePOJO vehicle = new VehiclePOJO();
         vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4545");
         parkingLotMain.park(vehicle);
@@ -102,8 +110,8 @@ public class ParkingLotTest {
         parkingLotMain.park(vehicle);
         vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
         parkingLotMain.park(vehicle);
-        String result=parkingLotMain.unPark(vehicle);
-        Assert.assertEquals("space available",result);
+        parkingLotMain.unPark(vehicle);
+        Assert.assertEquals("Have Space lot number 3",owner.getParkingSpace());
     }
     @Test
     public void givenfindMyCar_WhenParke_ThenReturnCarPosition() {
@@ -122,9 +130,10 @@ public class ParkingLotTest {
     @Test
     public void givenVehicleParkInLot_WhenCharge_ThenReturnTrue() {
         try {
+            parkingLotMain.addObserver(owner);
             vehicle.setVehicleName("sujuki");vehicle.setVehicleNumber("MH4R4545");
-            String result = parkingLotMain.park(vehicle);
-            Assert.assertEquals("park vehicle",result);
+            parkingLotMain.park(vehicle);
+            Assert.assertEquals("this vehicle charge Rs.10",owner.getParkingCharge());
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
