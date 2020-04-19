@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-
 public class ParkingLotMain {
 
     LinkedHashMap<Integer,Object> parkingLot = new LinkedHashMap<Integer, Object>();
@@ -16,23 +15,22 @@ public class ParkingLotMain {
     Integer capacity = 3;
     Integer key = 0;
 
+    // constructor to put key and null value
     public ParkingLotMain() {
         for (Integer key = 1; key<=capacity; key++){
             parkingLot.put(key,null);
         }
     }
-
+    // add object to observableList
     public void addObserver(Observer observable) {
         this.observableList.add(observable);
     }
-
+    // send notification
      public void setStatus(String isFull) {
         this.isFull = isFull;
-        for (Observer observable : this.observableList) {
+        for (Observer observable : this.observableList)
             observable.update(this.isFull);
-        }
     }
-
     // park vehicle and check parking lot
     public String park(VehiclePOJO vehicle) throws  ParkingLotException {
         if (parkingLot.containsValue(vehicle))
@@ -44,25 +42,23 @@ public class ParkingLotMain {
             setStatus("Full");
         return "park vehicle";
     }
-
     // Check Vehicle is present or not
     public String  isVehiclePark(VehiclePOJO vehicle) throws ParkingLotException {
-        if (parkingLot.containsValue(vehicle)) {
-            int lotPosition = occupiedParkingLot(vehicle);
-            return "vehicle park in lot number "+lotPosition;
-        }
-        else {
+        if (parkingLot.containsValue(vehicle))
+            return "vehicle park in lot number "+occupiedParkingLot(vehicle);
+        else
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_NOT_PARK,
                                                                            "This vehicle not park in my parking lot");
-        }
     }
+    // find empty parking lot
     public int vehicleParkLotNumber(){
         Integer k=1;
         for ( ; k<=capacity ; k++)
             if (parkingLot.get(k) == null)
                 return k;
-        return k;
+        return k+1;
     }
+    // find Object key
     public int occupiedParkingLot(VehiclePOJO vehicle){
         int k = 0;
         for (Object o: parkingLot.values()) {
@@ -80,9 +76,8 @@ public class ParkingLotMain {
             setStatus("Have Space lot number "+key);
             return "unpark";
         }
-        else{
+        else
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_NOT_PARK,
                                                                            "This vehicle not park in my parking lot");
-        }
     }
 }
