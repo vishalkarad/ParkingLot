@@ -14,7 +14,7 @@ public class ParkingLotTest {
     Owner owner = null;
     AirportSecurity airportSecurity = null;
     Integer capacity = 3;
-    int slot = 1;
+    int slot = 3;
 
     @Before
     public void setUp(){
@@ -60,14 +60,16 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLot_WhenFull_ThenReturnTrue() {
         try {
-            VehiclePOJO vehicle = new VehiclePOJO();
-            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4545");
-            parkingLotMain.park(vehicle);
-            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
-            parkingLotMain.park(vehicle);
+            parkingLotMain.addObserver(owner);
+            VehiclePOJO vehicle1 = new VehiclePOJO();
+            vehicle1.setVehicleName("suzuki");vehicle1.setVehicleNumber("MH4R4545");
+            parkingLotMain.park(vehicle1);
+            VehiclePOJO vehicle2 = new VehiclePOJO();
+            vehicle2.setVehicleName("suzuki");vehicle2.setVehicleNumber("MH4R4547");
+            parkingLotMain.park(vehicle2);
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
-            String result = parkingLotMain.park(vehicle);
-            Assert.assertEquals("park vehicle",result);
+            parkingLotMain.park(vehicle);
+            Assert.assertEquals("Full Lot A",owner.getParkingFull());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,7 +87,7 @@ public class ParkingLotTest {
             parkingLotMain.park(vehicle2);
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
             parkingLotMain.park(vehicle);
-            Assert.assertEquals("Full",airportSecurity.getParkingSlotFullOrNot());
+            Assert.assertEquals("Full Lot A",airportSecurity.getParkingSlotFullOrNot());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -167,5 +169,18 @@ public class ParkingLotTest {
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
+    }
+    @Test
+    public void givenPrkMyCar_WhenNearestFreeSpace_ThenParkCar() throws ParkingLotException {
+        parkingLotMain.addObserver(owner);
+        VehiclePOJO vehicle1 = new VehiclePOJO();
+        vehicle1.setVehicleName("suzuki");vehicle1.setVehicleNumber("MH4R4545");
+        parkingLotMain.park(vehicle1);
+        VehiclePOJO vehicle2 = new VehiclePOJO();
+        vehicle2.setVehicleName("suzuki");vehicle2.setVehicleNumber("MH4R4547");
+        parkingLotMain.park(vehicle2);
+        vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
+        String result = parkingLotMain.park(vehicle);
+        Assert.assertEquals("park vehicle",result);
     }
 }
