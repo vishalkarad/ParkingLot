@@ -75,11 +75,12 @@ public class ParkingLotTest {
     public void givenParkingLotIsFull_WhenInformAirportSecurity_ThenReturnTrue() {
         try {
             parkingLotMain.addObserver(airportSecurity);
-            VehiclePOJO vehicle = new VehiclePOJO();
-            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4545");
-            parkingLotMain.park(vehicle);
-            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
-            parkingLotMain.park(vehicle);
+            VehiclePOJO vehicle1 = new VehiclePOJO();
+            vehicle1.setVehicleName("suzuki");vehicle1.setVehicleNumber("MH4R4545");
+            parkingLotMain.park(vehicle1);
+            VehiclePOJO vehicle2 = new VehiclePOJO();
+            vehicle2.setVehicleName("suzuki");vehicle2.setVehicleNumber("MH4R4547");
+            parkingLotMain.park(vehicle2);
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
             parkingLotMain.park(vehicle);
             Assert.assertEquals("Full",airportSecurity.getParkingSlotFullOrNot());
@@ -93,8 +94,9 @@ public class ParkingLotTest {
         try {
             vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4545");
             parkingLotMain.park(vehicle);
-            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
-            String  result=parkingLotMain.unPark(vehicle);;
+            VehiclePOJO vehicle1 = new VehiclePOJO();
+            vehicle1.setVehicleName("suzuki");vehicle1.setVehicleNumber("MH4R4547");
+            parkingLotMain.unPark(vehicle1);;
         } catch (ParkingLotException e) {
             Assert.assertEquals("This vehicle not park in my parking lot",e.getMessage());
         }
@@ -103,11 +105,12 @@ public class ParkingLotTest {
     @Test
     public void givenAgainParkingSpaceAvailable_WhenInformOwner_ThenReturnTrue() throws ParkingLotException {
         parkingLotMain.addObserver(owner);
-        VehiclePOJO vehicle = new VehiclePOJO();
-        vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4545");
-        parkingLotMain.park(vehicle);
-        vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
-        parkingLotMain.park(vehicle);
+        VehiclePOJO vehicle1 = new VehiclePOJO();
+        vehicle1.setVehicleName("suzuki");vehicle1.setVehicleNumber("MH4R4545");
+        parkingLotMain.park(vehicle1);
+        VehiclePOJO vehicle2 = new VehiclePOJO();
+        vehicle2.setVehicleName("suzuki");vehicle2.setVehicleNumber("MH4R4547");
+        parkingLotMain.park(vehicle2);
         vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4548");
         parkingLotMain.park(vehicle);
         parkingLotMain.unPark(vehicle);
@@ -118,10 +121,11 @@ public class ParkingLotTest {
         try {
             vehicle.setVehicleName("sujuki");vehicle.setVehicleNumber("MH4R4545");
             parkingLotMain.park(vehicle);
-            vehicle.setVehicleName("suzuki");vehicle.setVehicleNumber("MH4R4547");
-            parkingLotMain.park(vehicle);
+            VehiclePOJO vehicle1 = new VehiclePOJO();
+            vehicle1.setVehicleName("suzuki");vehicle1.setVehicleNumber("MH4R4545");
+            parkingLotMain.park(vehicle1);
             String result = parkingLotMain.isVehiclePark(vehicle);
-            Assert.assertEquals("vehicle park in lot number 2",result);
+            Assert.assertEquals("vehicle park in lot number 1",result);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
