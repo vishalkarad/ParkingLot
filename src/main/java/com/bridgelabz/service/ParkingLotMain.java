@@ -12,11 +12,15 @@ public class ParkingLotMain {
     LinkedHashMap<Integer,Object> parkingLot = new LinkedHashMap<Integer, Object>();
     private List<Observer> observableList = new ArrayList<>();
     private String isFull;
-    Integer capacity = 3;
+    Integer capacity;
+    int slot =2;
+    char sloatName = 'A';
     Integer key = 0;
 
     // constructor to put key and null value
-    public ParkingLotMain() {
+    public ParkingLotMain(Integer capacity,int slot) {
+        this.capacity = capacity;
+        this.slot = slot;
         for (Integer key = 1; key<=capacity; key++){
             parkingLot.put(key,null);
         }
@@ -38,8 +42,10 @@ public class ParkingLotMain {
        key = vehicleParkLotNumber();
         parkingLot.replace(key,vehicle);
         setStatus("this vehicle charge Rs.10");
-        if (key%3 == 0)
-            setStatus("Full");
+        if (key%slot == 0 || key == capacity) {
+            setStatus("Full Lot " + sloatName);
+            sloatName++;
+        }
         return "park vehicle";
     }
     // Check Vehicle is present or not
