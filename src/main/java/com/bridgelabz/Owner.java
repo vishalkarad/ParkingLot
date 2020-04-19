@@ -8,7 +8,7 @@ public class Owner implements Observer {
     @Override
     public void update(Object status) {
         String objecToString = status.toString();
-        if (status.equals("Full"))
+        if (objecToString.contains("Full"))
             this.setParkingFull((String) status);
         else if (objecToString.contains("Have Space lot number "))
             this.setParkingSpace((String) status);
