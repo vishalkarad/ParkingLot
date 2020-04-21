@@ -1,5 +1,6 @@
 package com.bridgelabz;
 
+import com.bridgelabz.service.Driver;
 import com.bridgelabz.service.ParkingLotMain;
 
 import java.util.Collections;
@@ -22,14 +23,17 @@ public class ParkingLotAttendant {
         this.slot = slot;
     }
     // find empty parking lot
-    public int vehicleParkLotNumber(){
-        Integer k=(checkLot()-1)*slot;
-        k++;
-
-        for (; k<=capacity ; k++)
-            if (parkingLot.get(k) == null)
-                return k;
-        return k+1;
+    public int vehicleParkLotNumber(VehiclePOJO vehicle){
+        Integer key=0;
+        if (vehicle.getDriver().getDriverType().equals(Driver.DriverType.HANDICAP))
+            key=0;
+        else
+            key=(checkLot()-1)*slot;
+        key++;
+        for (; key<=capacity ; key++)
+            if (parkingLot.get(key) == null)
+                return key;
+        return key+1;
     }
     // find Object key
     public int occupiedParkingLot(Object vehicle){
