@@ -34,7 +34,7 @@ public class ParkingLotMain {
     public String park(VehiclePOJO vehicle) throws  ParkingLotException {
         if (parkingLot.containsValue(vehicle))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK,"This vehicle already park");
-        key = attendant.vehicleParkLotNumber();
+        key = attendant.vehicleParkLotNumber(vehicle);
         parkingLot.replace(key,vehicle);
         setStatus("this vehicle charge Rs.10");
         String lotStatus = attendant.isLotFull();
