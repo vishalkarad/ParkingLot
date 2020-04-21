@@ -1,40 +1,34 @@
 package com.bridgelabz;
-
-import com.bridgelabz.service.ParkingLotMain;
-
-import java.util.Comparator;
+import com.bridgelabz.service.Driver;
 
 public class VehiclePOJO {
 
+    // Declare variable
     private String vehicleName;
     private String vehicleNumber;
-    public String vehicleType;
+    private String vehicleType;
+    private Driver driver;
 
-    // setter method
-    public void setVehicleName(String vehicleName) {
+    // Declare constructor
+    public VehiclePOJO(String vehicleName, String vehicleNumber, String vehicleType, Driver driver) {
         this.vehicleName = vehicleName;
-    }
-    public void setVehicleNumber(String vehicleNumber) {
         this.vehicleNumber = vehicleNumber;
-    }
-    public void setVehicleType(String vehicleType) {
         this.vehicleType = vehicleType;
+        this.driver = driver;
     }
 
     // getter method
-    public String getVehicleName() {
-        return vehicleName;
+    public Driver getDriver() {
+        return driver;
     }
-    public String getVehicleNumber() {
-        return vehicleNumber;
-    }
-
 
     @Override
     public String toString() {
         return "VehiclePOJO{" +
                 "vehicleName='" + vehicleName + '\'' +
                 ", vehicleNumber='" + vehicleNumber + '\'' +
+                ", vehicleType='" + vehicleType + '\'' +
+                ", driver=" + driver +
                 '}';
     }
 }
