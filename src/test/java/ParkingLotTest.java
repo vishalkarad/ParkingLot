@@ -7,6 +7,7 @@ import com.bridgelabz.service.ParkingLotMain;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import java.text.ParseException;
 
 public class ParkingLotTest {
 
@@ -201,7 +202,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotSystem_WhenCarColor_ThenReturnCarsLocation()  throws ParkingLotException {
+    public void givenParkingLotSystem_WhenCarColor_ThenReturnCarsLocation() throws ParkingLotException, ParseException {
         parkingLotMain.addObserver(owner);
         parkingLotMain.addObserver(police);
         VehiclePOJO vehicle1 = new VehiclePOJO("suzuki","MH4R4545","SMALL",new Driver(Driver.DriverType.NORMAL),"WHITE");
@@ -215,7 +216,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotSystem_WhenCarColorAndBrandGiven_ThenReturnCarsLocation() throws ParkingLotException {
+    public void givenParkingLotSystem_WhenCarColorAndBrandGiven_ThenReturnCarsLocation() throws ParkingLotException, ParseException {
         parkingLotMain.addObserver(owner);
         parkingLotMain.addObserver(police);
         VehiclePOJO vehicle1 = new VehiclePOJO("Toyota","MH4R4545","SMALL",new Driver(Driver.DriverType.NORMAL),"BLUE");
@@ -229,7 +230,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotSystem_WhenCarBrandGiven_ThenReturnCarsLocation() throws ParkingLotException {
+    public void givenParkingLotSystem_WhenCarBrandGiven_ThenReturnCarsLocation() throws ParkingLotException, ParseException {
         parkingLotMain.addObserver(owner);
         parkingLotMain.addObserver(police);
         VehiclePOJO vehicle1 = new VehiclePOJO("Toyota","MH4R4545","SMALL",new Driver(Driver.DriverType.NORMAL),"BLUE");
@@ -240,5 +241,22 @@ public class ParkingLotTest {
         String result = parkingLotMain.park(vehicle);
         parkingLotMain.serching("BMW");
         Assert.assertEquals("2,",police.getVehiclevehicleLocation());
+    }
+    @Test
+    public void givenParkingLotSystem_WhenParkLast30Minuts_ThenReturnCarsLocation() throws ParkingLotException, ParseException {
+       try {
+           parkingLotMain.addObserver(owner);
+           parkingLotMain.addObserver(police);
+           VehiclePOJO vehicle1 = new VehiclePOJO("Toyota", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
+           parkingLotMain.park(vehicle1);
+           VehiclePOJO vehicle2 = new VehiclePOJO("BMW", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+           parkingLotMain.park(vehicle2);
+           VehiclePOJO vehicle = new VehiclePOJO("Toyota", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
+           String result = parkingLotMain.park(vehicle);
+           parkingLotMain.serching("00:3", "00:50");
+           Assert.assertEquals("1,2,3,", police.getVehiclevehicleLocation());
+       } catch(Exception e){
+           e.printStackTrace();
+       }
     }
 }
