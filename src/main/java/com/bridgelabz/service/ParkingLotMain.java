@@ -1,17 +1,20 @@
 package com.bridgelabz.service;
+import com.bridgelabz.CalculateTime;
 import com.bridgelabz.Observer;
 import com.bridgelabz.ParkingLotAttendant;
 import com.bridgelabz.VehiclePOJO;
 import com.bridgelabz.exception.ParkingLotException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ParkingLotMain {
 
-    public LinkedHashMap<Integer,Object> parkingLot = new LinkedHashMap<>();
+    public LinkedHashMap<Integer,VehiclePOJO> parkingLot = new LinkedHashMap<>();
+    public Map<Integer,Object> vehicleTime = new HashMap<>();
     private List<Observer> observableList = new ArrayList<>();
     ParkingLotAttendant attendant;
     private String isFull;
-    Integer key = 0;
 
     // constructor to put key and null value
     public ParkingLotMain(Integer capacity,int slot) {
@@ -20,6 +23,7 @@ public class ParkingLotMain {
             parkingLot.put(key,null);
         }
     }
+    public ParkingLotMain(){}
     // add object to observableList
     public void addObserver(Observer observable) {
         this.observableList.add(observable);
@@ -34,12 +38,12 @@ public class ParkingLotMain {
     public String park(VehiclePOJO vehicle) throws  ParkingLotException {
         if (parkingLot.containsValue(vehicle))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK,"This vehicle already park");
-        key = attendant.vehicleParkLotNumber(vehicle);
+        Integer key = attendant.vehicleParkLotNumber(vehicle);
         parkingLot.replace(key,vehicle);
+        vehicleTime.put(key,CalculateTime.getCurrentTime());
         setStatus("this vehicle charge Rs.10");
         String lotStatus = attendant.isLotFull();
         setStatus(lotStatus);
-
         return "park vehicle";
     }
     // Check Vehicle is present or not
@@ -63,18 +67,31 @@ public class ParkingLotMain {
                                                                            "This vehicle not park in my parking lot");
     }
 
-    public void serching(String... contains){
+    public void serching(String... contains) throws ParseException {
         String location = "";
-        int count = 0;
-        for (Object vechicle:parkingLot.values()){
-            for (int i=0;i<contains.length;i++) {
-                if (vechicle.toString().contains(contains[i]))
-                    count++;
+        if (contains.length==2 && contains[0].contains(":") && contains[1].contains(":") ){
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            Date startTime = format.parse(contains[0]);
+            Date endTime = format.parse(contains[1]);
+            try {
+                for (int vehicleKey=1;vehicleKey<=vehicleTime.size();vehicleKey++) {
+                    Date userDate = format.parse(vehicleTime.get(vehicleKey).toString());
+                    if (userDate.after(startTime) && userDate.before(endTime))
+                        location += vehicleKey +",";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (count==contains.length) {
-                location += attendant.occupiedParkingLot(vechicle) + ",";
+        }
+        else {
+            for (Object o : parkingLot.values()) {
+                int count = 0;
+                for (int index = 0; index < contains.length; index++)
+                    if (o.toString().contains(contains[index]))
+                        count++;
+                if (count == contains.length)
+                    location += attendant.occupiedParkingLot(o) + ",";
             }
-            count = 0;
         }
         setStatus(location);
     }
