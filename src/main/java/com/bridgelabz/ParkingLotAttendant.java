@@ -1,5 +1,6 @@
 package com.bridgelabz;
 
+import com.bridgelabz.exception.ParkingLotException;
 import com.bridgelabz.service.Driver;
 import com.bridgelabz.service.ParkingLotMain;
 
@@ -23,13 +24,21 @@ public class ParkingLotAttendant {
         this.slot = slot;
     }
     // find empty parking lot
-    public int vehicleParkLotNumber(VehiclePOJO vehicle){
+    public int vehicleParkLotNumber(VehiclePOJO vehicle) throws ParkingLotException {
         Integer key=0;
         if (vehicle.getDriver().getDriverType().equals(Driver.DriverType.HANDICAP))
-            key=0;
+            key=1;
+        if (vehicle.getVehicleType().equals("LARGE")){
+            key=((checkLot()-1)*slot)+1;
+            int lotCapacity=(key+slot)-1;
+            for (; key<lotCapacity;key++)
+                if (parkingLot.get(key)==null && parkingLot.get(key+1)==null)
+                    return key;
+            throw new ParkingLotException(ParkingLotException.MyexceptionType.LOT_IS_FULL,"Lot is full");
+        }
         else
-            key=(checkLot()-1)*slot;
-        key++;
+            key=((checkLot()-1)*slot)+1;
+
         for (; key<=capacity ; key++)
             if (parkingLot.get(key) == null)
                 return key;
@@ -61,9 +70,8 @@ public class ParkingLotAttendant {
     }
     // check minimum cars in lot
     public int minimumcarsLots(){
-        int minCar = lots.keySet().stream().filter(key -> Collections.max(lots.values()).equals(lots.get(key)))
+       return lots.keySet().stream().filter(key -> Collections.max(lots.values()).equals(lots.get(key)))
                 .findFirst().get();
-        return minCar;
     }
     // check lot full or not
     public String isLotFull(){
