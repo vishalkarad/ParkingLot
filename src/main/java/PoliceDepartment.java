@@ -2,18 +2,18 @@ import com.bridgelabz.Observer;
 
 public class PoliceDepartment implements Observer {
 
-    private String vehicleColore;
+    private String vehicleLocation;
 
-    public String getVehicleColore() {
-        return vehicleColore;
+    public String getVehiclevehicleLocation() {
+        return vehicleLocation;
     }
 
-    public void setVehicleColore(String vehicleColore) {
-        this.vehicleColore = vehicleColore;
+    public void setVehiclevehicleLocation(String vehicleLocation) {
+        this.vehicleLocation = vehicleLocation;
     }
 
     @Override
     public void update(Object status) {
-        this.setVehicleColore((String) status);
+        this.setVehiclevehicleLocation((String) status);
     }
 }
