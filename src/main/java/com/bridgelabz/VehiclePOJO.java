@@ -8,13 +8,15 @@ public class VehiclePOJO {
     private String vehicleNumber;
     private String vehicleType;
     private Driver driver;
+    private String vehicleColore;
 
     // Declare constructor
-    public VehiclePOJO(String vehicleName, String vehicleNumber, String vehicleType, Driver driver) {
+    public VehiclePOJO(String vehicleName, String vehicleNumber, String vehicleType, Driver driver,String vehicleColore) {
         this.vehicleName = vehicleName;
         this.vehicleNumber = vehicleNumber;
         this.vehicleType = vehicleType;
         this.driver = driver;
+        this.vehicleColore = vehicleColore;
     }
 
     // getter method
@@ -29,6 +31,7 @@ public class VehiclePOJO {
                 ", vehicleNumber='" + vehicleNumber + '\'' +
                 ", vehicleType='" + vehicleType + '\'' +
                 ", driver=" + driver +
+                ", vehicleColore='" + vehicleColore + '\'' +
                 '}';
     }
 }
