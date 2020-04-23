@@ -63,11 +63,18 @@ public class ParkingLotMain {
                                                                            "This vehicle not park in my parking lot");
     }
 
-    public void serching(String colore){
+    public void serching(String... contains){
         String location = "";
+        int count = 0;
         for (Object vechicle:parkingLot.values()){
-            if (vechicle.toString().contains(colore))
-                location+=attendant.occupiedParkingLot(vechicle)+",";
+            for (int i=0;i<contains.length;i++) {
+                if (vechicle.toString().contains(contains[i]))
+                    count++;
+            }
+            if (count==contains.length) {
+                location += attendant.occupiedParkingLot(vechicle) + ",";
+            }
+            count = 0;
         }
         setStatus(location);
     }

@@ -191,6 +191,20 @@ public class ParkingLotTest {
         VehiclePOJO vehicle = new VehiclePOJO("suzuki","MH4R4547","SMALL",new Driver(Driver.DriverType.NORMAL),"WHITE");
         String result = parkingLotMain.park(vehicle);
         parkingLotMain.serching("WHITE");
-        Assert.assertEquals("1,2,3,",police.getVehicleColore());
+        Assert.assertEquals("1,2,3,",police.getVehiclevehicleLocation());
+    }
+
+    @Test
+    public void givenParkingLotSystem_WhenCarColorAndBrandGiven_ThenReturnCars() throws ParkingLotException {
+        parkingLotMain.addObserver(owner);
+        parkingLotMain.addObserver(police);
+        VehiclePOJO vehicle1 = new VehiclePOJO("Toyota","MH4R4545","SMALL",new Driver(Driver.DriverType.NORMAL),"BLUE");
+        parkingLotMain.park(vehicle1);
+        VehiclePOJO vehicle2 = new VehiclePOJO("suzuki","MH4R4546","SMALL",new Driver(Driver.DriverType.NORMAL),"WHITE");
+        parkingLotMain.park(vehicle2);
+        VehiclePOJO vehicle = new VehiclePOJO("Toyota","MH4R4547","SMALL",new Driver(Driver.DriverType.NORMAL),"BLUE");
+        String result = parkingLotMain.park(vehicle);
+        parkingLotMain.serching("Toyota","BLUE");
+        Assert.assertEquals("1,3,",police.getVehiclevehicleLocation());
     }
 }
