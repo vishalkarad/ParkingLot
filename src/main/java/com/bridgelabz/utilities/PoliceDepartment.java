@@ -1,4 +1,4 @@
-import com.bridgelabz.Observer;
+import com.bridgelabz.observer.Observer;
 
 public class PoliceDepartment implements Observer {
 

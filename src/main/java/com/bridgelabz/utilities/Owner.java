@@ -1,5 +1,7 @@
 package com.bridgelabz;
 
+import com.bridgelabz.observer.Observer;
+
 public class Owner implements Observer {
     private String parkingFull;
     private String parkingSpace;

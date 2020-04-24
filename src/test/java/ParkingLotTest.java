@@ -1,8 +1,5 @@
-import com.bridgelabz.AirportSecurity;
-import com.bridgelabz.Owner;
-import com.bridgelabz.VehiclePOJO;
+import com.bridgelabz.utilities.*;
 import com.bridgelabz.exception.ParkingLotException;
-import com.bridgelabz.service.Driver;
 import com.bridgelabz.service.ParkingLotMain;
 import org.junit.Assert;
 import org.junit.Before;
@@ -243,7 +240,7 @@ public class ParkingLotTest {
         Assert.assertEquals("2,",police.getVehiclevehicleLocation());
     }
     @Test
-    public void givenParkingLotSystem_WhenParkLast30Minuts_ThenReturnCarsLocation() throws ParkingLotException, ParseException {
+    public void givenParkingLotSystem_WhenParkLast30Minuts_ThenReturnCarsLocation() {
        try {
            parkingLotMain.addObserver(owner);
            parkingLotMain.addObserver(police);
@@ -252,11 +249,28 @@ public class ParkingLotTest {
            VehiclePOJO vehicle2 = new VehiclePOJO("BMW", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
            parkingLotMain.park(vehicle2);
            VehiclePOJO vehicle = new VehiclePOJO("Toyota", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
-           String result = parkingLotMain.park(vehicle);
-           parkingLotMain.serching("00:3", "00:50");
+           parkingLotMain.park(vehicle);
+           parkingLotMain.serching("01:00", "24:50");
            Assert.assertEquals("1,2,3,", police.getVehiclevehicleLocation());
        } catch(Exception e){
            e.printStackTrace();
        }
+    }
+
+    @Test
+    public void givenParkingLotSystem_WhenFraudulentPlate_ThenReturnCarsLocation() throws ParkingLotException, ParseException {
+        try {
+            parkingLotMain.addObserver(police);
+            VehiclePOJO vehicle1 = new VehiclePOJO("Toyota", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
+            parkingLotMain.park(vehicle1);
+            VehiclePOJO vehicle2 = new VehiclePOJO("BMW", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+            parkingLotMain.park(vehicle2);
+            VehiclePOJO vehicle = new VehiclePOJO("Toyota", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
+            parkingLotMain.park(vehicle);
+            parkingLotMain.fraudulentPlate();
+            Assert.assertEquals("2,", police.getVehiclevehicleLocation());
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

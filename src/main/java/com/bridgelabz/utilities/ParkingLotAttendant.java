@@ -18,7 +18,7 @@ public class ParkingLotAttendant {
     LinkedHashMap parkingLot;
 
     // constructor
-    public ParkingLotAttendant(LinkedHashMap<Integer, Object> parkingLot, Integer capacity, int slot) {
+    public ParkingLotAttendant(LinkedHashMap<Integer, VehiclePOJO> parkingLot, Integer capacity, int slot) {
         this.parkingLot = parkingLot;
         this.capacity = capacity;
         this.slot = slot;

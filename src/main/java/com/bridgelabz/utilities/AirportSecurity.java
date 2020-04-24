@@ -1,5 +1,7 @@
 package com.bridgelabz;
 
+import com.bridgelabz.observer.Observer;
+
 public class AirportSecurity implements Observer {
 
     private String parkingSlotFullOrNot;
