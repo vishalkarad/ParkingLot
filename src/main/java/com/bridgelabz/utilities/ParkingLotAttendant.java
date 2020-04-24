@@ -1,7 +1,6 @@
-package com.bridgelabz;
+package com.bridgelabz.utilities;
 
 import com.bridgelabz.exception.ParkingLotException;
-import com.bridgelabz.service.Driver;
 import com.bridgelabz.service.ParkingLotMain;
 
 import java.util.Collections;

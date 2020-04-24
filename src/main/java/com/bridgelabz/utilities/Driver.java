@@ -1,4 +1,4 @@
-package com.bridgelabz.service;
+package com.bridgelabz.utilities;
 
 public class Driver {
 
@@ -7,11 +7,9 @@ public class Driver {
     }
 
     private DriverType driverType;
-
     public Driver(DriverType driverType) {
         this.driverType=driverType;
     }
-
     public DriverType getDriverType() {
         return driverType;
     }

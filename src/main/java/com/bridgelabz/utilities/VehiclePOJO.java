@@ -1,5 +1,4 @@
-package com.bridgelabz;
-import com.bridgelabz.service.Driver;
+package com.bridgelabz.utilities;
 
 public class VehiclePOJO {
 
@@ -8,15 +7,15 @@ public class VehiclePOJO {
     private String vehicleNumber;
     private String vehicleType;
     private Driver driver;
-    private String vehicleColore;
+    private String vehicleColor;
 
     // Declare constructor
-    public VehiclePOJO(String vehicleName, String vehicleNumber, String vehicleType, Driver driver,String vehicleColore) {
+    public VehiclePOJO(String vehicleName, String vehicleNumber, String vehicleType, Driver driver,String vehicleColor) {
         this.vehicleName = vehicleName;
         this.vehicleNumber = vehicleNumber;
         this.vehicleType = vehicleType;
         this.driver = driver;
-        this.vehicleColore = vehicleColore;
+        this.vehicleColor = vehicleColor;
     }
 
     // getter method
@@ -35,7 +34,7 @@ public class VehiclePOJO {
                 ", vehicleNumber='" + vehicleNumber + '\'' +
                 ", vehicleType='" + vehicleType + '\'' +
                 ", driver=" + driver +
-                ", vehicleColore='" + vehicleColore + '\'' +
+                ", vehicleColor='" + vehicleColor + '\'' +
                 '}';
     }
 }
