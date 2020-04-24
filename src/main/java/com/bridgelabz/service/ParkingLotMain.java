@@ -1,11 +1,11 @@
 package com.bridgelabz.service;
-import com.bridgelabz.CalculateTime;
-import com.bridgelabz.Observer;
-import com.bridgelabz.ParkingLotAttendant;
-import com.bridgelabz.VehiclePOJO;
+import com.bridgelabz.utilities.CalculateTime;
+import com.bridgelabz.observer.Observer;
+import com.bridgelabz.utilities.ParkingLotAttendant;
+import com.bridgelabz.utilities.PoliceDepartment;
+import com.bridgelabz.utilities.VehiclePOJO;
 import com.bridgelabz.exception.ParkingLotException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ParkingLotMain {
@@ -14,16 +14,27 @@ public class ParkingLotMain {
     public Map<Integer,Object> vehicleTime = new HashMap<>();
     private List<Observer> observableList = new ArrayList<>();
     ParkingLotAttendant attendant;
+    PoliceDepartment police;
     private String isFull;
+    CalculateTime time;
+    String location = "";
+    int froudNumberplate = 0;
 
     // constructor to put key and null value
     public ParkingLotMain(Integer capacity,int slot) {
         attendant = new ParkingLotAttendant(parkingLot,capacity,slot);
+        time = new CalculateTime(vehicleTime);
+        police = new PoliceDepartment();
         for (Integer key = 1; key<=capacity; key++){
             parkingLot.put(key,null);
+            vehicleTime.put(key,null);
         }
     }
-    public ParkingLotMain(){}
+
+    public ParkingLotMain() {
+
+    }
+
     // add object to observableList
     public void addObserver(Observer observable) {
         this.observableList.add(observable);
@@ -40,7 +51,7 @@ public class ParkingLotMain {
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK,"This vehicle already park");
         Integer key = attendant.vehicleParkLotNumber(vehicle);
         parkingLot.replace(key,vehicle);
-        vehicleTime.put(key,CalculateTime.getCurrentTime());
+        vehicleTime.replace(key,CalculateTime.getCurrentTime());
         setStatus("this vehicle charge Rs.10");
         String lotStatus = attendant.isLotFull();
         setStatus(lotStatus);
@@ -67,22 +78,9 @@ public class ParkingLotMain {
                                                                            "This vehicle not park in my parking lot");
     }
 
-    public void serching(String... contains) throws ParseException {
-        String location = "";
-        if (contains.length==2 && contains[0].contains(":") && contains[1].contains(":") ){
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-            Date startTime = format.parse(contains[0]);
-            Date endTime = format.parse(contains[1]);
-            try {
-                for (int vehicleKey=1;vehicleKey<=vehicleTime.size();vehicleKey++) {
-                    Date userDate = format.parse(vehicleTime.get(vehicleKey).toString());
-                    if (userDate.after(startTime) && userDate.before(endTime))
-                        location += vehicleKey +",";
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    public int serching(String... contains) throws ParseException {
+        if (contains.length==2 && contains[0].contains(":") && contains[1].contains(":") )
+           location=time.vehicleIntime(contains);
         else {
             for (Object o : parkingLot.values()) {
                 int count = 0;
@@ -91,8 +89,23 @@ public class ParkingLotMain {
                         count++;
                 if (count == contains.length)
                     location += attendant.occupiedParkingLot(o) + ",";
+                else froudNumberplate++;
             }
         }
         setStatus(location);
+        return froudNumberplate;
+    }
+    public void fraudulentPlate() throws ParseException {
+        String fraudPlate ="";
+        int i=1;
+        for (Object o: police.numberRegister.values()) {
+             String keyv=police.numberRegister.keySet().stream().filter(key -> o.equals(police.numberRegister.get(key))).findFirst().get();
+             String value=o.toString();
+             serching(keyv,value);
+             if (froudNumberplate == parkingLot.size())
+                 fraudPlate+=i+",";
+             froudNumberplate=0;i++;
+        }
+        setStatus(fraudPlate);
     }
 }
