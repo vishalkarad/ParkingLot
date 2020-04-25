@@ -27,7 +27,7 @@ public class ParkingLotAttendant {
         Integer key=0;
         if (vehicle.getDriver().getDriverType().equals(Driver.DriverType.HANDICAP))
             key=1;
-        if (vehicle.getVehicleType().equals("LARGE")){
+        else if (vehicle.getVehicleType().equals("LARGE")){
             key=((checkLot()-1)*slot)+1;
             int lotCapacity=(key+slot)-1;
             for (; key<lotCapacity;key++)
@@ -35,7 +35,7 @@ public class ParkingLotAttendant {
                     return key;
             throw new ParkingLotException(ParkingLotException.MyexceptionType.LOT_IS_FULL,"Lot is full");
         }
-        else
+        else if (vehicle.getVehicleType().equals("SMALL"))
             key=((checkLot()-1)*slot)+1;
 
         for (; key<=capacity ; key++)

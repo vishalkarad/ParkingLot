@@ -1,12 +1,10 @@
 package com.bridgelabz.service;
-import com.bridgelabz.utilities.CalculateTime;
+import com.bridgelabz.utilities.*;
 import com.bridgelabz.observer.Observer;
-import com.bridgelabz.utilities.ParkingLotAttendant;
-import com.bridgelabz.utilities.PoliceDepartment;
-import com.bridgelabz.utilities.VehiclePOJO;
 import com.bridgelabz.exception.ParkingLotException;
 import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ParkingLotMain {
 
@@ -17,11 +15,13 @@ public class ParkingLotMain {
     PoliceDepartment police;
     private String isFull;
     CalculateTime time;
+    int slot =3;
     String location = "";
     int froudNumberplate = 0;
 
     // constructor to put key and null value
     public ParkingLotMain(Integer capacity,int slot) {
+        this.slot=slot;
         attendant = new ParkingLotAttendant(parkingLot,capacity,slot);
         time = new CalculateTime(vehicleTime);
         police = new PoliceDepartment();
@@ -107,5 +107,20 @@ public class ParkingLotMain {
              froudNumberplate=0;i++;
         }
         setStatus(fraudPlate);
+    }
+    public void serchInSlot(Driver.DriverType handicap, String... c){
+        location ="";
+        int upTo = (((c[0].charAt(0)-64)-1)*slot)+1+slot;
+        for (int key=(((c[0].charAt(0)-64)-1)*slot)+1; key<upTo; key++) {
+            VehiclePOJO o=parkingLot.get(key);
+            String s = o.toString();
+            int count = 0;
+            for (int index = 1; index < c.length; index++)
+                if (s.contains(c[index]) && o.getDriver().getDriverType().equals(handicap))
+                    count++;
+            if (count == c.length-1)
+                location += attendant.occupiedParkingLot(o) + ",";
+        }
+        setStatus(location);
     }
 }
